@@ -1,0 +1,27 @@
+
+CREATE DATABASE IF NOT EXISTS notes_db;
+USE notes_db;
+
+CREATE TABLE IF NOT EXISTS user_tbl (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS message_tbl (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_message_user
+        FOREIGN KEY (user_id)
+        REFERENCES user_tbl(id)
+        ON DELETE CASCADE,
+
+    INDEX idx_message_user (user_id)
+);
